@@ -13,12 +13,17 @@
         }
 
         body {
-            /* Fondo degradado oscuro a rojo */
-            background: linear-gradient(180deg, #111111 0%, #3a0000 40%, #cc534d 100%);
+            /* 1. Fondo Negro Carbón Profundo */
+            background-color: #0a0a0e;
+            background-image: 
+                /* 2. Doodles Vectoriales en Blanco Neón Sutil (Marca de Agua) */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23ffffff' fill-opacity='0.12'%3E%3Cpath d='M12 8l-6 10h5v8h2V18h5zM52 10l-10 4 2 2 6-2-2 6 2 2 4-10zM22 48l-4 12 12-4-8-8zm42-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-32 24a4 4 0 1 0 0-8 4 4 0 0 0 0 10zm48-12l-8-4 2-2 3 1-1-3 2-2 2 10zM10 60l8-8 4 4-8 8zm60-44a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM28 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z'/%3E%3C/g%3E%3C/svg%3E"),
+                radial-gradient(circle at top, #1c1c28 0%, #0d0d12 60%, #050508 100%);
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            color: white;
+            align-items: center;
             padding: 40px 20px;
         }
 
@@ -26,110 +31,215 @@
             width: 100%;
             max-width: 420px;
             text-align: center;
+            /* Tarjeta Blanca de Alto Contraste */
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            padding: 35px 25px;
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         }
 
-        /* Foto de perfil / Logo */
+        .live-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 20px;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #22c55e;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
         .profile-img {
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            border: 3px solid #ff4d4d;
-            margin-bottom: 20px;
+            border: 4px solid #ffd100;
+            margin: 0 auto 18px auto;
             object-fit: cover;
-            box-shadow: 0 0 20px rgba(255, 77, 77, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 209, 0, 0.4);
+            display: block;
+            background-color: #fff;
         }
 
         .title {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 800;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            color: #0f172a;
         }
 
         .bio {
-            font-size: 15px;
-            font-weight: 400;
-            margin-bottom: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 18px;
             line-height: 1.5;
-            color: #eeeeee;
+            color: #475569;
         }
 
-        /* Contenedor de los botones */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .badge-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+        }
+
         .links-container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 14px;
         }
 
-        /* Estilo de los botones */
         .link-btn {
             display: flex;
             align-items: center;
             background-color: #ffffff;
-            color: #333333;
+            color: #0f172a;
             text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 15px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 14px 18px;
+            border-radius: 18px;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 2px solid #e2e8f0;
+        }
+
+        .link-btn.featured {
+            border-color: #25D366;
+            background: #f0fdf4;
         }
 
         .link-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+            border-color: #ffd100;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
 
         .link-icon {
-            font-size: 24px;
-            margin-right: 15px;
+            width: 30px;
+            height: 30px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
-        .link-text {
+        .link-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .link-content {
             flex-grow: 1;
             text-align: left;
         }
-        
+
+        .link-title {
+            font-size: 15px;
+            font-weight: 700;
+            display: block;
+            color: #0f172a;
+        }
+
+        .link-sub {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+            display: block;
+            margin-top: 1px;
+        }
+
         .dots {
-            color: #999;
-            font-size: 20px;
+            color: #cbd5e1;
+            font-size: 18px;
+        }
+
+        .footer-note {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Reemplaza la URL por la de tu logo real -->
-        <img src="https://i.imgur.com/Tu6r0W0.png" alt="Logo" class="profile-img">
+        <div class="live-status">
+            <span class="live-dot"></span>
+            <span>Bot Cazador Activo 24/7</span>
+        </div>
+
+        <img src="file:///C:/Users/oscar/OneDrive/Escritorio/bot/pagina/img.jpg" alt="Las Mejores Ofertas MX" class="profile-img">
         
         <h1 class="title">Las Mejores Ofertas MX</h1>
         <p class="bio">
-            🚨 ¡Cazamos errores de precio, cupones y liquidaciones extremas!<br>
-            Únete a nuestra comunidad gratis 👇
+            ¡Monitoreamos liquidaciones, errores de precio y cupones al instante!
         </p>
 
+        <div class="trust-badges">
+            <span class="badge-item">⚡ 100% Gratis</span>
+            <span class="badge-item">🛡️ Tiendas Oficiales</span>
+            <span class="badge-item">🚫 Sin Spam</span>
+        </div>
+
         <div class="links-container">
-            <!-- Botón WhatsApp -->
-            <a href="https://whatsapp.com/channel/TUENLACEAQUI" class="link-btn" target="_blank">
-                <span class="link-icon">💬</span>
-                <span class="link-text">Canal de WhatsApp (Recomendado)</span>
+            <a href="https://whatsapp.com/channel/0029Vb8xBBwCxoB4RHxeEv3C" class="link-btn featured" target="_blank">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="#25D366">
+                        <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984 0 1.764.459 3.487 1.333 5.006l-1.417 5.176 5.297-1.389c1.474.804 3.141 1.226 4.774 1.227h.004c5.505 0 9.988-4.478 9.989-9.984 0-2.668-1.037-5.176-2.922-7.062-1.886-1.885-4.394-2.922-7.068-2.922zm5.856 14.168c-.244.686-1.428 1.31-1.964 1.389-.49.072-1.127.103-3.267-.783-2.738-1.134-4.505-3.921-4.642-4.104-.137-.183-1.11-1.478-1.11-2.818 0-1.34.701-1.996.951-2.263.25-.268.549-.335.733-.335.183 0 .367 0 .528.007.171.007.4.004.58.438.183.435.626 1.53.68 1.639.055.109.091.238.018.384-.073.146-.11.238-.22.366-.11.128-.231.286-.33.384-.11.109-.225.228-.097.447.128.219.569.939 1.22 1.519.839.747 1.547.978 1.766 1.087.219.109.347.091.476-.055.128-.146.549-.64.695-.859.146-.219.293-.183.494-.109.201.073 1.28.604 1.5 1.713.22.109.22.219.183.329z"/>
+                    </svg>
+                </span>
+                <div class="link-content">
+                    <span class="link-title">Canal de WhatsApp</span>
+                    <span class="link-sub">Recibe alertas urgentes directo en tu cel</span>
+                </div>
                 <span class="dots">⋮</span>
             </a>
 
-            <!-- Botón Telegram -->
-            <a href="https://t.me/TUENLACEAQUI" class="link-btn" target="_blank">
-                <span class="link-icon">✈️</span>
-                <span class="link-text">Canal de Telegram (Más Rápido)</span>
-                <span class="dots">⋮</span>
-            </a>
-            
-            <!-- Botón Extra (Opcional) -->
-            <a href="https://instagram.com/TUENLACEAQUI" class="link-btn" target="_blank">
-                <span class="link-icon">📸</span>
-                <span class="link-text">Síguenos en Instagram</span>
+            <a href="https://t.me/LasMejoresOfertasMX" class="link-btn" target="_blank">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="#229ED9">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                    </svg>
+                </span>
+                <div class="link-content">
+                    <span class="link-title">Canal de Telegram</span>
+                    <span class="link-sub">Ideal para no perderte errores de precio</span>
+                </div>
                 <span class="dots">⋮</span>
             </a>
         </div>
+
+        <p class="footer-note">🔒 Solo compartimos enlaces verificados a tiendas oficiales.</p>
     </div>
 
 </body>
