@@ -135,6 +135,14 @@
         .link-btn.featured {
             border-color: #25D366;
             background: #f0fdf4;
+            animation: vibracion 2.5s infinite;
+        }
+
+        @keyframes vibracion {
+            0%, 80%, 100% { transform: translateX(0) rotate(0); }
+            85% { transform: translateX(-3px) rotate(-1deg); }
+            90% { transform: translateX(3px) rotate(1deg); }
+            95% { transform: translateX(-3px) rotate(-1deg); }
         }
 
         .link-btn:hover {
