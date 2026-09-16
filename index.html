@@ -31,12 +31,13 @@
             width: 100%;
             max-width: 420px;
             text-align: center;
-            /* Tarjeta Blanca de Alto Contraste */
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(12px);
             padding: 35px 25px;
             border-radius: 28px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            /* 👇 Hacemos la sombra más suave y agregamos un borde gris oscuro 👇 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 2px solid #334155; 
         }
 
         .live-status {
