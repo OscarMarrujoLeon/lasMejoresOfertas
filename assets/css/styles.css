@@ -72,3 +72,17 @@
   .product-detail-title,.product-detail-copy,.product-detail-hook,.product-detail-shop{overflow-wrap:anywhere;word-break:normal}
   .product-modal-close{position:sticky;float:none;display:grid;margin-left:auto;margin-right:12px}
 }
+
+
+/* ===== Floating back-to-top button ===== */
+.back-to-top{position:fixed;right:22px;bottom:22px;z-index:95;display:grid;place-items:center;width:50px;height:50px;padding:0;border:1px solid rgba(255,255,255,.28);border-radius:50%;background:#101b2b;color:#ffd21c;font:950 29px/1 system-ui,-apple-system,"Segoe UI",sans-serif;box-shadow:0 12px 30px rgba(2,9,18,.28);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(14px) scale(.94);transition:opacity .2s ease,transform .2s ease,visibility .2s ease,background .2s ease}
+.back-to-top.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.back-to-top:hover{background:#ffd21c;color:#07111f}
+.back-to-top:focus-visible{outline:3px solid #1799d3;outline-offset:3px}
+.back-to-top span{transform:translateY(-1px)}
+@media(max-width:560px){.back-to-top{right:14px;bottom:76px;width:46px;height:46px;font-size:26px}}
+@media(prefers-reduced-motion:reduce){.back-to-top{transition:none}}
+
+/* Keep the back-to-top button above the social channel bar */
+.back-to-top{right:22px;bottom:96px}
+@media(max-width:560px){.back-to-top{right:14px;bottom:82px}}

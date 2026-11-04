@@ -222,4 +222,20 @@ document.getElementById('search')?.addEventListener('input', event => {
   }, 800);
 });
 
+
+/* Boton flotante para volver al inicio */
+const backToTop = document.getElementById('backToTop');
+function actualizarBotonSubir() {
+  if (!backToTop) return;
+  backToTop.classList.toggle('show', window.scrollY > 520);
+}
+window.addEventListener('scroll', actualizarBotonSubir, { passive: true });
+backToTop?.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+  });
+});
+actualizarBotonSubir();
+
 init();setInterval(actualizarBarraEstado,60000);
