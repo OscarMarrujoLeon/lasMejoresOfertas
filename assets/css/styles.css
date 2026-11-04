@@ -161,3 +161,43 @@
 .showcase .alert-icon{transition:transform .18s ease}
 @media(max-width:560px){.showcase .alert{grid-template-columns:40px minmax(0,1fr) auto;gap:10px}.showcase .alert-icon{width:39px;height:39px;border-radius:11px}.showcase .alert-icon img{width:27px;height:27px}}
 @media(prefers-reduced-motion:reduce){.showcase .alert-icon{transition:none}}
+
+/* ===== Tarjetas equilibradas cuando existen cupones activos ===== */
+.direct-price-panel{position:relative;overflow:hidden;min-height:181px;margin:12px 0 14px;padding:14px 15px;border:1px solid #d9e7f5;border-radius:14px;background:linear-gradient(135deg,#f5f9ff 0%,#edf5fd 100%);color:#12304f;display:flex;flex-direction:column;justify-content:center}
+.direct-price-panel:before{content:"";position:absolute;width:96px;height:96px;right:-38px;top:-45px;border-radius:50%;background:rgba(23,153,211,.10)}
+.direct-price-title{position:relative;margin-bottom:13px;color:#17659a;font-size:10px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
+.direct-price-main{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:11px}
+.direct-price-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:#dff5ea;color:#07894f}
+.direct-price-icon svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.direct-price-copy{display:grid;min-width:0;gap:2px}.direct-price-copy b{font-size:20px;letter-spacing:-.025em;color:#071f3b}.direct-price-copy small{font-size:10px;line-height:1.35;color:#5b7088}
+.direct-price-saving{display:grid;gap:2px;padding:8px 10px;border-radius:10px;background:#e4f8ee;color:#087948;font-size:11px;font-weight:950;text-align:right;white-space:nowrap}.direct-price-saving small{font-size:9px;color:#2f8d65}
+.direct-price-note{position:relative;margin-top:13px;padding-top:10px;border-top:1px dashed #c7d8e8;color:#64748b;font-size:9px;line-height:1.4}
+.card .coupon-match{min-height:181px;display:flex;flex-direction:column;justify-content:center}.card .coupon-match .coupon-warning{margin-top:auto;padding-top:7px}
+@media(max-width:560px){#ofertas .direct-price-panel{display:none!important}}
+
+/* ===== Indicador de cupón en el espacio blanco de tarjetas móviles ===== */
+.mobile-coupon-indicator{display:none}
+@media(max-width:560px){
+  .mobile-coupon-indicator{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:5px;
+    width:max-content;
+    max-width:100%;
+    min-height:25px;
+    margin:5px 0 7px;
+    padding:5px 9px;
+    border:1px solid #f2c900;
+    border-radius:999px;
+    background:#ffcf18;
+    color:#172033;
+    box-shadow:0 3px 8px rgba(7,31,59,.12);
+    font:900 9px/1 system-ui,-apple-system,"Segoe UI",sans-serif;
+    cursor:pointer;
+  }
+  .mobile-coupon-indicator:active{transform:scale(.97)}
+  .mobile-coupon-indicator:focus-visible{outline:3px solid #0f5bd3;outline-offset:2px}
+  .mobile-coupon-ticket{font-size:12px;line-height:1}
+  .card.has-coupon{box-shadow:0 0 0 2px rgba(255,207,24,.55),0 12px 28px rgba(7,31,59,.10)}
+}
