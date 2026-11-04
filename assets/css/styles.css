@@ -117,3 +117,34 @@
 .email-channel{font:inherit;cursor:pointer;text-align:left}.email-channel-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:#fff;color:#07111f;font-size:21px}.email-channel{background:#ffd21c!important;color:#07111f!important;border:0}
 
 .email-channel-icon{overflow:hidden;background:#fff!important}.email-channel-icon img{width:34px;height:34px;object-fit:contain;display:block}
+
+
+/* Restored single latest offer and expanded policy */
+.policy-dialog{scrollbar-gutter:stable}.policy-intro{padding:14px 16px;border-radius:13px;background:#eef5fc;color:#173c6b!important;font-weight:750}.policy-dialog h3{scroll-margin-top:18px}.policy-dialog p{margin-top:7px}.policy-dialog h3:first-of-type{margin-top:18px}
+
+.policy-dialog a{color:#0879b4;font-weight:850;text-decoration:underline}.policy-dialog strong{color:#0b1628}
+
+
+/* ===== Loading skeleton for summary counters ===== */
+.stats-loading .stat b,.stats-loading .stat span{position:relative;overflow:hidden;color:transparent!important;background:#e5e9ef;border-radius:9px;user-select:none}
+.stats-loading .stat b{display:block;width:64px;height:31px;margin:0 auto 12px}
+.stats-loading .stat span{display:block;width:150px;max-width:78%;height:15px;margin:0 auto}
+.stats-loading .stat b::after,.stats-loading .stat span::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.88),transparent);animation:stats-skeleton-loading 1.2s ease-in-out infinite}
+@keyframes stats-skeleton-loading{100%{transform:translateX(100%)}}
+@media(prefers-reduced-motion:reduce){.stats-loading .stat b::after,.stats-loading .stat span::after{animation:none;background:rgba(255,255,255,.38)}}
+@media(max-width:560px){.stats-loading .stat b{width:48px;height:27px;margin-bottom:9px}.stats-loading .stat span{width:90px;height:13px;max-width:86%}}
+
+
+/* ===== Loading skeleton for radar status bar ===== */
+.status-bar-loading .status-live,.status-bar-loading .status-data,.status-bar-loading .status-separator{color:transparent!important}
+.status-bar-loading .status-live,.status-bar-loading .status-data{position:relative;overflow:hidden;background:rgba(255,255,255,.52);border-radius:999px;box-shadow:none}
+.status-bar-loading .status-live{width:190px;height:30px;border:0}
+.status-bar-loading .status-data{width:165px;height:18px}
+.status-bar-loading .status-data.status-update{width:190px}
+.status-bar-loading .status-separator{width:8px}
+.status-bar-loading .status-dot{display:none}
+.status-bar-loading .status-live::after,.status-bar-loading .status-data::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent);animation:status-skeleton-loading 1.15s ease-in-out infinite}
+@keyframes status-skeleton-loading{100%{transform:translateX(100%)}}
+@media(prefers-reduced-motion:reduce){.status-bar-loading .status-live::after,.status-bar-loading .status-data::after{animation:none;background:rgba(255,255,255,.3)}}
+@media(max-width:760px){.status-bar-loading .status-bar-inner{display:flex;flex-wrap:nowrap;justify-content:center;gap:8px}.status-bar-loading .status-live{width:126px;height:26px}.status-bar-loading .status-data{width:92px;height:16px}.status-bar-loading .status-data.status-update{width:115px}.status-bar-loading .status-separator{display:none}}
+@media(max-width:480px){.status-bar-loading .status-data.status-update{display:none}.status-bar-loading .status-live{width:120px}.status-bar-loading .status-data{width:88px}}
