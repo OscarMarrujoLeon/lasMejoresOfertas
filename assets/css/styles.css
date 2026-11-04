@@ -148,3 +148,16 @@
 @media(prefers-reduced-motion:reduce){.status-bar-loading .status-live::after,.status-bar-loading .status-data::after{animation:none;background:rgba(255,255,255,.3)}}
 @media(max-width:760px){.status-bar-loading .status-bar-inner{display:flex;flex-wrap:nowrap;justify-content:center;gap:8px}.status-bar-loading .status-live{width:126px;height:26px}.status-bar-loading .status-data{width:92px;height:16px}.status-bar-loading .status-data.status-update{width:115px}.status-bar-loading .status-separator{display:none}}
 @media(max-width:480px){.status-bar-loading .status-data.status-update{display:none}.status-bar-loading .status-live{width:120px}.status-bar-loading .status-data{width:88px}}
+
+
+/* ===== Custom icons for hero alert preview ===== */
+.showcase .alert{grid-template-columns:46px minmax(0,1fr) auto;gap:13px;align-items:center}
+.showcase .alert-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:13px;overflow:hidden;flex:0 0 auto}
+.showcase .alert-icon img{display:block;width:31px;height:31px;object-fit:contain;filter:brightness(0) invert(1)}
+.showcase .alert-icon-product{background:linear-gradient(145deg,#ff6b3d,#ff3d67);box-shadow:0 8px 20px rgba(255,61,103,.2)}
+.showcase .alert-icon-saving{background:linear-gradient(145deg,#16c784,#0aa86e);box-shadow:0 8px 20px rgba(22,199,132,.18)}
+.showcase .alert-icon-cart{background:linear-gradient(145deg,#278be8,#1767c5);box-shadow:0 8px 20px rgba(39,139,232,.18)}
+.showcase .alert:hover .alert-icon{transform:translateY(-1px) scale(1.03)}
+.showcase .alert-icon{transition:transform .18s ease}
+@media(max-width:560px){.showcase .alert{grid-template-columns:40px minmax(0,1fr) auto;gap:10px}.showcase .alert-icon{width:39px;height:39px;border-radius:11px}.showcase .alert-icon img{width:27px;height:27px}}
+@media(prefers-reduced-motion:reduce){.showcase .alert-icon{transition:none}}
