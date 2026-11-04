@@ -21,3 +21,107 @@
 @media(max-width:560px){.card-actions{gap:6px}.mini-action{flex:1;padding:8px 7px!important;font-size:11px!important}.offer.market-action,.product-detail-action.market-action{font-size:14px!important}.market-action span:not(.external-arrow){padding:0 22px}.status-bar-inner{width:calc(100% - 24px);min-height:42px;gap:8px;justify-content:flex-start}.status-data,.status-separator{display:none}.status-update{display:inline;font-size:11px}.status-live{padding:5px 8px}.ending-shell,.how-shell{padding:20px}.ending-card{grid-template-columns:105px 1fr}.ending-card img{padding:6px}.quick-filters{overflow-x:auto;flex-wrap:nowrap;padding-bottom:5px}.quick-filter{flex:0 0 auto}.product-action-row{grid-template-columns:1fr}.card-actions{grid-template-columns:1fr 1fr}.product-modal{padding:0}.product-dialog{max-height:100vh;height:100%;border-radius:0}.product-detail{padding:18px 15px 28px;gap:17px}.product-detail-media{min-height:290px;padding:18px}.product-detail-media img{height:265px}.product-detail-title{font-size:27px}.product-detail-copy{font-size:14px}.product-detail-price{font-size:37px}.product-facts{grid-template-columns:1fr 1fr}.product-modal-close{right:10px;top:10px}.other-socials{justify-content:center;flex-wrap:wrap}.other-socials>span{width:100%;text-align:center}.footer-socials{grid-template-columns:1fr 1fr}.channel .social-logo{width:40px;height:40px}.floating-channels{right:10px;bottom:10px;padding:7px}.floating-channels>a{width:44px;padding:0;justify-content:center}.floating-channels>a>span:not(.channel-icon){display:none}.floating-main{display:flex}.alerts-dialog{padding:27px 19px;border-radius:22px}.alerts-dialog h2{font-size:27px}.modal-channel{padding:14px 12px}.modal-channel em{display:none}.menu-toggle{display:grid}.navcta{display:none}.mobile-menu{top:64px}.latest-section{padding:25px 0 38px}.latest-shell{padding:18px;border-radius:20px}.latest-card{padding:12px;gap:15px}.latest-image{height:270px;padding:14px}.latest-title{font-size:24px}.latest-price{font-size:32px}.latest-action{display:flex;width:100%}.latest-live{white-space:normal}.why-join{padding:40px 0}.why-shell{padding:27px 20px;border-radius:23px}.why-top{grid-template-columns:1fr;align-items:start}.why-badge{justify-self:start}.benefits{grid-template-columns:1fr}.benefit-card{min-height:auto}.why-actions{flex-direction:column}.why-actions .channel{width:100%;min-width:0}.footer-main{grid-template-columns:1fr;gap:28px}.footer-main>div:first-child{grid-column:auto}.footer-bottom{flex-direction:column}.hero{background:#041631;background-image:none;position:relative}.hero:before,.hero:after{content:"";position:absolute;left:0;right:0;pointer-events:none;background-image:url("../images/hero-doodles-mobile.jpg");background-repeat:no-repeat;background-size:100% auto;z-index:0}.hero:before{top:0;height:185px;background-position:center top;opacity:.34;mask-image:linear-gradient(to bottom,#000 0%,#000 56%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 56%,transparent 100%)}.hero:after{bottom:0;height:210px;background-position:center bottom;opacity:.28;mask-image:linear-gradient(to top,#000 0%,#000 55%,transparent 100%);-webkit-mask-image:linear-gradient(to top,#000 0%,#000 55%,transparent 100%)}.heroin{position:relative;z-index:1;padding-top:76px;padding-bottom:102px}.showcase{display:none}.eyebrow{background:rgba(7,24,49,.90);backdrop-filter:blur(8px)}.lead{max-width:100%}.proof{margin-top:22px}.stats{position:relative;z-index:3}.media{height:245px}.body{padding:15px}.title{font-size:16px}.price{font-size:27px}.wrap{width:calc(100% - 20px)}.navin{height:64px}.brand{font-size:13px}.brand img{width:40px;height:40px}.navcta{font-size:11px;padding:9px}.heroin{min-height:auto;padding:45px 0}.actions{flex-direction:column}.channel{width:100%;min-width:0}.proof{flex-direction:column;gap:8px}.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.grid,.coupon-grid,.toolbar{grid-template-columns:1fr}.media{height:270px}.footerin{flex-direction:column}.banner{padding:24px}}
 
 .accent-yellow{color:#ffd21c!important}
+
+/* Mobile catalog: two product cards per row */
+@media (max-width: 560px) {
+  #ofertas .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  #ofertas .card {
+    min-width: 0;
+    border-radius: 16px;
+  }
+
+  #ofertas .media {
+    height: 165px;
+    padding: 10px;
+  }
+
+  #ofertas .discount,
+  #ofertas .fresh {
+    top: 8px;
+    padding: 5px 7px;
+    font-size: 9px;
+  }
+
+  #ofertas .discount { left: 8px; }
+  #ofertas .fresh { right: 8px; }
+
+  #ofertas .body {
+    padding: 11px;
+  }
+
+  #ofertas .shop {
+    max-width: 100%;
+    font-size: 9px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #ofertas .verified-store-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  #ofertas .hook {
+    display: none;
+  }
+
+  #ofertas .title {
+    min-height: 38px;
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    -webkit-line-clamp: 2;
+  }
+
+  #ofertas .prices {
+    display: block;
+    margin-top: 9px;
+    padding: 9px 0 3px;
+  }
+
+  #ofertas .old {
+    font-size: 10px;
+  }
+
+  #ofertas .price {
+    font-size: 20px;
+  }
+
+  #ofertas .save,
+  #ofertas .offer-badges,
+  #ofertas .coupon-match,
+  #ofertas .card-actions {
+    display: none !important;
+  }
+
+  #ofertas .offer.market-action {
+    min-height: 40px !important;
+    margin-top: 10px;
+    padding: 9px 35px 9px 10px !important;
+    border-radius: 10px !important;
+    font-size: 11px !important;
+    line-height: 1.2;
+  }
+
+  #ofertas .market-action span:not(.external-arrow) {
+    padding: 0;
+  }
+
+  #ofertas .market-action .external-arrow {
+    right: 6px;
+    width: 26px;
+    height: 26px;
+  }
+}
+
+@media (max-width: 360px) {
+  #ofertas .grid { gap: 7px; }
+  #ofertas .media { height: 145px; }
+  #ofertas .body { padding: 9px; }
+  #ofertas .price { font-size: 18px; }
+}
