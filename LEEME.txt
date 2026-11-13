@@ -1,0 +1,18 @@
+AJUSTE FINAL DE LA ULTIMA OFERTA
+
+Incluye:
+- Composicion mas compacta y cercana a la referencia.
+- Columna de imagen mas ancha.
+- Zoom moderado de producto sin deformarlo.
+- Titulo, descripcion y precio con menos espacio vertical.
+- Panel verde oculto cuando no existe cupon general.
+- Etiquetas mas cerca del precio.
+- Boton amarillo mas grande.
+- Mejor presencia del mensaje Compra inteligente.
+- Adaptacion para tablet y celular.
+
+INSTALACION
+1. Reemplaza index.html en la raiz del proyecto.
+2. Reemplaza assets/css/styles.css con styles.css.
+3. Reemplaza assets/js/app.js con app.js.
+4. Conserva tus carpetas assets/images e icons actuales.
