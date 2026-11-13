@@ -8,11 +8,52 @@ function cuponesBancariosPara(o,precioBase){
     return {...c,descuento,precioFinal:Math.max(1,Math.floor(base-descuento))};
   }).filter(Boolean).sort((a,b)=>a.precioFinal-b.precioFinal||b.descuento-a.descuento)
 }
+const PAYMENT_PREFS_KEY='lmo_formas_pago_preferidas_v1';
+function nombrePagoNormalizado(v){return String(v||'').trim().toLowerCase()}
+function obtenerFormasPagoPreferidas(){
+  try{const value=JSON.parse(localStorage.getItem(PAYMENT_PREFS_KEY)||'[]');return Array.isArray(value)?value.map(String):[]}catch{return[]}
+}
+function guardarFormasPagoPreferidas(values){
+  const clean=[...new Set((values||[]).map(String).filter(Boolean))];
+  localStorage.setItem(PAYMENT_PREFS_KEY,JSON.stringify(clean));
+  return clean;
+}
+function esFormaPagoPreferida(banco,prefs=obtenerFormasPagoPreferidas()){
+  const target=nombrePagoNormalizado(banco);
+  return prefs.some(x=>nombrePagoNormalizado(x)===target);
+}
+function ordenarBancosPorPreferencia(bancos){
+  const prefs=obtenerFormasPagoPreferidas();
+  return [...(bancos||[])].sort((a,b)=>{
+    const ap=esFormaPagoPreferida(a.banco,prefs)?0:1;
+    const bp=esFormaPagoPreferida(b.banco,prefs)?0:1;
+    return ap-bp||a.precioFinal-b.precioFinal||b.descuento-a.descuento;
+  });
+}
+function catalogoFormasPago(){
+  const seen=new Map();
+  activeBankCoupons.forEach(x=>{const n=String(x.banco||'').trim();if(n&&!seen.has(nombrePagoNormalizado(n)))seen.set(nombrePagoNormalizado(n),n)});
+  return [...seen.values()].sort((a,b)=>a.localeCompare(b,'es'));
+}
+function paymentPreferencesHTML(){
+  const options=catalogoFormasPago(),selected=obtenerFormasPagoPreferidas();
+  if(!options.length)return'';
+  return `<section class="payment-preference-box" aria-label="Preferencias de formas de pago">
+    <div class="payment-pref-heading"><div><span>PERSONALIZA TUS OFERTAS</span><h3>¿Qué formas de pago puedes usar?</h3><p>Las opciones elegidas aparecerán primero. Las demás seguirán disponibles en “Ver más”.</p></div><button type="button" class="payment-pref-edit" data-edit-payments>${selected.length?'Cambiar':'Elegir'}</button></div>
+    <form class="payment-pref-form" ${selected.length?'hidden':''}>
+      <div class="payment-pref-options">${options.map(name=>`<label><input type="checkbox" name="paymentPref" value="${esc(name)}" ${selected.includes(name)?'checked':''}><span>${esc(name)}</span></label>`).join('')}</div>
+      <div class="payment-pref-actions"><button type="submit">Guardar preferencias</button><button type="button" data-show-all-payments>Mostrar todas</button></div>
+    </form>
+    ${selected.length?`<div class="payment-pref-summary">Primero verás: <b>${selected.map(esc).join(', ')}</b></div>`:''}
+  </section>`;
+}
 function mejorCombinacionPara(o){
   const diario=cuponesPara(o)[0]||null;
   const base=diario?diario.precioFinal:(+o.p_act||0);
-  const bancos=cuponesBancariosPara(o,base);
-  return {diario,bancos,mejorBanco:bancos[0]||null,precioBase:base};
+  const bancos=ordenarBancosPorPreferencia(cuponesBancariosPara(o,base));
+  const favoritas=bancos.filter(x=>esFormaPagoPreferida(x.banco));
+  const mejorBanco=(favoritas[0]||bancos[0]||null);
+  return {diario,bancos,mejorBanco,precioBase:base};
 }function fechaFinCupon(c){const v=c.fecha_fin||c.vigencia_fin||c.expira_en||c.fecha_vencimiento;const d=v?new Date(v):null;return d&&!isNaN(d)?d:null}function textoVigencia(c){const f=fechaFinCupon(c);if(!f)return'';const ms=f-Date.now();if(ms<=0)return'Finalizado';const h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);return h<24?`Termina en ${h} h ${m} min`:`Vigente hasta ${f.toLocaleDateString('es-MX',{day:'numeric',month:'short'})}`}function couponMatchesHTML(o,latest=false){const best=cuponesPara(o)[0];if(!best)return'';const aviso=best.seleccionados?'Cumple la compra mínima. Confirma que el producto esté seleccionado.':'Cálculo estimado; valida el cupón al pagar.';const vig=textoVigencia(best);return `<div class="${latest?'latest-coupons':'coupon-match'}">${latest?'<h4>🎟️ Mejor cupón activo para esta oferta</h4>':'<div class="coupon-match-title">Mejor precio con cupón</div>'}<div class="coupon-option"><span class="coupon-code">${esc(best.codigo)}</span><span class="coupon-price">${money(best.precioFinal)}<small class="coupon-saving">Ahorras ${money(best.descuento)}</small></span></div>${vig?`<div class="coupon-expiry">⏱ ${esc(vig)}</div>`:''}<div class="coupon-tools"><button class="coupon-tool copy-product-coupon" type="button" data-code="${esc(best.codigo)}">Copiar cupón</button></div><div class="coupon-warning">${aviso}</div></div>`}function directPricePanelHTML(o){
   const precio=+o.p_act||0;
   const anterior=+o.p_orig||0;
@@ -135,7 +176,7 @@ function actualizarBotonMostrarMas(button,expanded){
   button.setAttribute('aria-expanded',String(expanded));
   button.classList.toggle('is-expanded',expanded);
   button.querySelector('span').textContent=expanded?'Mostrar menos':'Mostrar más';
-  button.querySelector('small').textContent=expanded?`Ocultar ${label}`:`${Math.max(0,total-4)} ${label} adicionales`;
+  const visible=Number(button.dataset.visible)||4;button.querySelector('small').textContent=expanded?`Ocultar ${label}`:`${Math.max(0,total-visible)} ${label} adicionales`;
 }
 function actualizarMenuCupones(total){document.querySelectorAll('[data-coupon-link]').forEach(link=>{link.hidden=total===0})}function latestStoreHTML(o){const tienda=String(o.tienda_oficial||'').trim();if(!tienda)return `<div class="latest-store latest-store-generic"><span>Mercado Libre</span></div>`;return `<div class="latest-store"><span>${esc(tienda)}</span><img src="icons/verificado.png" alt="Tienda oficial" title="Tienda oficial"></div>`}
 function latestCouponPanelHTML(o){const best=cuponesPara(o)[0];if(!best)return'';const vigencia=textoVigencia(best),aviso=best.seleccionados?'Cumple la compra mínima. Confirma en Mercado Libre que el producto esté seleccionado.':'Precio estimado. Confirma que el cupón aplique antes de completar la compra.';return `<section class="latest-coupon-panel" aria-label="Mejor cupón para esta oferta"><div class="latest-coupon-label"><span aria-hidden="true">☆</span> Mejor cupón activo para esta oferta</div><div class="latest-coupon-content"><div class="latest-coupon-left"><div class="latest-coupon-code-line"><span aria-hidden="true">🎟️</span><strong>${esc(best.codigo)}</strong></div><button class="latest-copy-coupon copy-product-coupon" type="button" data-code="${esc(best.codigo)}">Copiar cupón</button>${vigencia?`<span class="latest-coupon-expiry">${esc(vigencia)}</span>`:''}</div><div class="latest-coupon-result"><small>Precio con cupón</small><strong>${money(best.precioFinal)}</strong><span>Ahorras ${money(best.descuento)}</span></div></div><p class="latest-coupon-note">${esc(aviso)}</p></section>`}
@@ -160,13 +201,15 @@ function latestCard(o){const precio=+o.p_act||0,anterior=+o.p_orig||0,porcentaje
     <div class="payment-card-meta"><span>Compra mínima ${money(diario.minimo||0)}</span><span>Tope ${money(diario.maximo||0)}</span></div>
   </article>`:'';
 
-  const bankCards=bancos.map((x,i)=>`<article class="payment-coupon-card bank-card ${i===0?'best':''}">
-    <div class="payment-card-label">${i===0?'★ MEJOR FORMA DE PAGO':'FORMA DE PAGO'}</div>
+  const prefs=obtenerFormasPagoPreferidas();
+  const preferredCount=bancos.filter(x=>esFormaPagoPreferida(x.banco,prefs)).length;
+  const bankCards=bancos.map((x,i)=>{const preferred=esFormaPagoPreferida(x.banco,prefs);return `<article class="payment-coupon-card bank-card ${i===0?'best':''} ${preferred?'preferred':''}">
+    <div class="payment-card-label">${preferred?'✓ TU FORMA DE PAGO':(i===0?'★ MEJOR PRECIO DISPONIBLE':'FORMA DE PAGO')}</div>
     <div class="payment-card-bank">${esc(x.banco)}</div>
     <div class="payment-card-price">${money(x.precioFinal)}</div>
     <div class="payment-card-code"><code>${esc(x.codigo)}</code><button class="copy-product-coupon" type="button" data-code="${esc(x.codigo)}">Copiar</button></div>
     <div class="payment-card-meta"><span>Compra mínima ${money(+x.compra_minima||0)}</span><span>Tope ${money(+x.tope_maximo||0)}</span></div>
-  </article>`).join('');
+  </article>`}).join('');
 
   return `<section class="detail-coupon-ticket all-payment-options" aria-label="Cupones y todas las formas de pago aplicables">
     <div class="detail-ticket-head"><span>PRECIOS SEGÚN TUS CONDICIONES</span><span>${bancos.length?`${bancos.length} OPCIONES DE PAGO`:'CUPÓN ACTIVO'}</span></div>
@@ -176,8 +219,8 @@ function latestCard(o){const precio=+o.p_act||0,anterior=+o.p_orig||0,porcentaje
       <h3>Elige la opción que sí puedes usar</h3>
       <p>Cada tarjeta conserva su precio, código, compra mínima y tope. No ocultamos alternativas porque cada persona tiene condiciones distintas.</p>
     </div>
-    <div class="payment-coupon-grid mobile-payment-list" id="modalPaymentGrid">${diarioCard}${bankCards}</div>
-    ${(bancos.length+(diario?1:0))>4?`<button class="mobile-show-more modal-payment-more" type="button" data-target="modalPaymentGrid" data-label="opciones de pago" data-total="${bancos.length+(diario?1:0)}" aria-expanded="false"><span>Ver más opciones</span><small>${bancos.length+(diario?1:0)-4} adicionales</small><b aria-hidden="true">⌄</b></button>`:''}
+    <div class="payment-coupon-grid mobile-payment-list" id="modalPaymentGrid" style="--mobile-visible-payments:${Math.max(4,preferredCount+(diario?1:0))}">${diarioCard}${bankCards}</div>
+    ${(bancos.length+(diario?1:0))>Math.max(4,preferredCount+(diario?1:0))?`<button class="mobile-show-more modal-payment-more" type="button" data-target="modalPaymentGrid" data-label="opciones de pago" data-total="${bancos.length+(diario?1:0)}" data-visible="${Math.max(4,preferredCount+(diario?1:0))}" aria-expanded="false"><span>Ver más opciones</span><small>${bancos.length+(diario?1:0)-Math.max(4,preferredCount+(diario?1:0))} adicionales</small><b aria-hidden="true">⌄</b></button>`:''}
     ${vig?`<div class="detail-ticket-expiry">⏱ ${esc(vig)}</div>`:''}
     <p class="detail-ticket-note">Los precios bancarios se calculan después del cupón diario cuando ambas promociones cumplen sus mínimos. La acumulación depende de Mercado Libre, la cuenta, el producto y la forma de pago; confirma el total al pagar.</p>
   </section>`
@@ -229,6 +272,7 @@ function productDetailHTML(o){
       ${sellerLine}
       <div class="product-detail-copy">${fullHook(o).frase?`<div class="product-copy-lead">${esc(fullHook(o).frase)}</div>`:''}<div class="product-copy-body">${esc(fullHook(o).detalle)}</div></div>
       <div class="product-detail-price-row"><div><div class="product-detail-old">${old>p?money(old):''}</div><div class="product-detail-price">${money(p)}</div></div>${save?`<span class="product-detail-save">Ahorras ${money(save)}</span>`:''}</div>
+      ${paymentPreferencesHTML()}
       ${detalleCuponHTML(o)}
       ${cleanSellerCouponInfo(o)}
       ${benefitHTML}
@@ -290,7 +334,22 @@ if(banks.length){
     }
     return;
   }
-  const f=e.target.closest('.quick-filter');if(f){document.querySelectorAll('.quick-filter').forEach(x=>x.classList.remove('active'));f.classList.add('active');filtroRapido=f.dataset.filter;paginaActual=1;render();return}const c=e.target.closest('.copy-product-coupon');if(c){copiarTexto(c.dataset.code,'Cupón '+c.dataset.code+' copiado');return}const sh=e.target.closest('.share-product');if(sh){compartirProducto(sh.dataset.productId);return}const op=e.target.closest('[data-open-product]');if(op){openProductModal(op.dataset.openProduct);return}});document.addEventListener('click',e=>{const item=e.target.closest('.ending-card[data-ending-id]');if(item)openProductModal(item.dataset.endingId)});document.addEventListener('keydown',e=>{const item=e.target.closest?.('.ending-card[data-ending-id]');if(item&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openProductModal(item.dataset.endingId)}});document.addEventListener('keydown',e=>{const card=e.target.closest?.('.card[data-product-id]');if(!card||e.target.closest('a,button,input,select,textarea'))return;if(e.key==='Enter'||e.key===' '){e.preventDefault();openProductModal(card.dataset.productId)}});/* =========================================================
+  const edit=e.target.closest('[data-edit-payments]');
+  if(edit){const form=edit.closest('.payment-preference-box')?.querySelector('.payment-pref-form');if(form){form.hidden=!form.hidden;edit.textContent=form.hidden?'Cambiar':'Cerrar'}return;}
+  const showAll=e.target.closest('[data-show-all-payments]');
+  if(showAll){guardarFormasPagoPreferidas([]);const card=showAll.closest('.payment-preference-box');if(card){card.outerHTML=paymentPreferencesHTML()}const id=productModalContent.querySelector('.product-detail-action')?.href;const current=offers.find(x=>destinoOferta(x)===id);if(current)productModalContent.innerHTML=productDetailHTML(current);return;}
+  const f=e.target.closest('.quick-filter');if(f){document.querySelectorAll('.quick-filter').forEach(x=>x.classList.remove('active'));f.classList.add('active');filtroRapido=f.dataset.filter;paginaActual=1;render();return}const c=e.target.closest('.copy-product-coupon');if(c){copiarTexto(c.dataset.code,'Cupón '+c.dataset.code+' copiado');return}const sh=e.target.closest('.share-product');if(sh){compartirProducto(sh.dataset.productId);return}const op=e.target.closest('[data-open-product]');if(op){openProductModal(op.dataset.openProduct);return}});document.addEventListener('submit',e=>{
+  const form=e.target.closest('.payment-pref-form');
+  if(!form)return;
+  e.preventDefault();
+  const values=[...form.querySelectorAll('input[name="paymentPref"]:checked')].map(x=>x.value);
+  guardarFormasPagoPreferidas(values);
+  const modalId=history.state?.productId;
+  const current=offers.find(x=>String(x.id_mlm||x.id)===String(modalId));
+  if(current)productModalContent.innerHTML=productDetailHTML(current);
+  toast(values.length?'Preferencias guardadas':'Se mostrarán todas las formas de pago');
+});
+document.addEventListener('click',e=>{const item=e.target.closest('.ending-card[data-ending-id]');if(item)openProductModal(item.dataset.endingId)});document.addEventListener('keydown',e=>{const item=e.target.closest?.('.ending-card[data-ending-id]');if(item&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openProductModal(item.dataset.endingId)}});document.addEventListener('keydown',e=>{const card=e.target.closest?.('.card[data-product-id]');if(!card||e.target.closest('a,button,input,select,textarea'))return;if(e.key==='Enter'||e.key===' '){e.preventDefault();openProductModal(card.dataset.productId)}});/* =========================================================
    ANALITICA PROPIA CON SUPABASE
    Tabla esperada: public.eventos_web
    ========================================================= */
